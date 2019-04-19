@@ -4,6 +4,7 @@ FROM ubuntu:18.04
 # set the environment variables
 ENV agfusion_version 1.2
 ENV DEBIAN_FRONTEND=noninteractive
+ENV PYENSEMBL_CACHE_DIR=/opt/pyensembl
 
 # run update and install necessary tools
 RUN apt-get update -y && apt-get install -y \
@@ -31,6 +32,7 @@ RUN pip3 install .
 WORKDIR /usr/local/bin
 
 # download reference genome
+RUN mkdir -p /opt/pyensembl
 RUN pyensembl install --species homo_sapiens --release 92
 
 # set default command
