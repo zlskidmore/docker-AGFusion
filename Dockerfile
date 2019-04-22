@@ -4,7 +4,8 @@ FROM ubuntu:18.04
 # set the environment variables
 ENV agfusion_version 1.2
 ENV DEBIAN_FRONTEND=noninteractive
-ENV PYENSEMBL_CACHE_DIR=/opt/pyensembl
+ENV PYENSEMBL_CACHE_DIR=/opt
+ENV ensembl_version=87
 
 # run update and install necessary tools
 RUN apt-get update -y && apt-get install -y \
@@ -31,10 +32,17 @@ WORKDIR /usr/local/bin/agfusion-${agfusion_version}
 RUN pip3 install .
 WORKDIR /usr/local/bin
 
-# download reference genome
-RUN mkdir -p /opt/pyensembl
-RUN pyensembl install --species homo_sapiens --release 92
-RUN pyensembl install --species homo_sapiens --release 87
+# download agfusion prebuilt database
+RUN mkdir -p /opt/agfusiondb/
+RUN agfusion download -s homo_sapiens -r 75 -d /opt/agfusiondb/
+RUN agfusion download -s homo_sapiens -r ${ensembl_version} -d /opt/agfusiondb/
+RUN agfusion download -s mus_musculus -r ${ensembl_version} -d /opt/agfusiondb/
+
+# download ensembl database
+RUN mkdir -p /opt
+RUN pyensembl install --species homo_sapiens --release 75
+RUN pyensembl install --species homo_sapiens --release ${ensembl_version}
+RUN pyensembl install --species mus_musculus --release ${ensembl_version}
 
 # set default command
 CMD ["agfusion --help"]
