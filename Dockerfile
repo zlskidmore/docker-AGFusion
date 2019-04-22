@@ -34,6 +34,7 @@ WORKDIR /usr/local/bin
 # download reference genome
 RUN mkdir -p /opt/pyensembl
 RUN pyensembl install --species homo_sapiens --release 92
+RUN pyensembl install --species homo_sapiens --release 87
 
 # set default command
 CMD ["agfusion --help"]
