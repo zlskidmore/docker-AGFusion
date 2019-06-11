@@ -2,7 +2,7 @@
 FROM ubuntu:18.04
 
 # set the environment variables
-ENV agfusion_version 1.2
+ENV agfusion_version 1.25
 ENV DEBIAN_FRONTEND=noninteractive
 ENV PYENSEMBL_CACHE_DIR=/opt
 ENV ensembl_version=87
